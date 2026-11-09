@@ -23,3 +23,8 @@ variable "break_glass_principal_arn" {
   description = "The ARN of the break glass principal."
   type        = string
 }
+
+variable "github_oidc_provider_enabled" {
+  description = "Whether to enable the GitHub OIDC provider."
+  type        = bool
+}

@@ -24,7 +24,8 @@ resource "aws_s3_bucket_public_access_block" "phi" {
 resource "aws_s3_bucket_server_side_encryption_configuration" "phi" {
   bucket = aws_s3_bucket.phi.id
   rule {
-    bucket_key_enabled = true
+    bucket_key_enabled       = true
+    blocked_encryption_types = ["SSE-C"]
     apply_server_side_encryption_by_default {
       sse_algorithm     = "aws:kms"
       kms_master_key_id = aws_kms_key.phi_key.arn

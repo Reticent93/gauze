@@ -20,7 +20,7 @@ resource "aws_iam_role" "redactor" {
   })
 }
 
-resource "aws_iam_role_policy" "redactor-logs" {
+resource "aws_iam_role_policy" "redactor" {
   role = aws_iam_role.redactor.id
   policy = jsonencode({
     Version = "2012-10-17"
@@ -52,6 +52,11 @@ resource "aws_iam_role_policy" "redactor-logs" {
   })
 }
 
+resource "aws_iam_role_policy_attachment" "redactor" {
+  role       = aws_iam_role.redactor.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
 resource "aws_cloudwatch_log_group" "redactor" {
   name              = "/aws/lambda/gauze-redactor"
   retention_in_days = 14
@@ -60,7 +65,7 @@ resource "aws_cloudwatch_log_group" "redactor" {
 resource "aws_lambda_function" "redactor" {
   function_name    = "gauze-redactor"
   role             = aws_iam_role.redactor.arn
-  handler          = handler.lambda_handler
+  handler          = "handler.lambda_handler"
   timeout          = 60
   memory_size      = 512
   runtime          = "python3.12"
